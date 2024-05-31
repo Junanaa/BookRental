@@ -6,7 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8"%>
+         pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE html>
@@ -14,16 +14,16 @@
 <head>
     <meta charset="UTF-8">
 
-    <jsp:include page="../../include/title.jsp" />
+    <jsp:include page="../../include/title.jsp"/>
 
     <link href="<c:url value='/resources/css/admin/create_account_form.css' />" rel="stylesheet" type="text/css">
 
 </head>
 <body>
 
-<jsp:include page="../../include/header.jsp" />
+<jsp:include page="../../include/header.jsp"/>
 
-<jsp:include page="../include/nav.jsp" />
+<jsp:include page="../include/nav.jsp"/>
 
 <section>
 
@@ -37,7 +37,8 @@
 
         <div class="create_account_form">
 
-            <form action="<c:url value='/admin/member/createAccountConfirm' />" name="create_account_form" method="post">
+            <form action="<c:url value='/admin/member/createAccountConfirm' />" name="create_account_form"
+                  method="post">
 
                 <input type="text" name="id" placeholder="INPUT ADMIN ID."> <br>
                 <input type="password" name="password" placeholder="INPUT ADMIN PW."> <br>
@@ -51,7 +52,7 @@
                 <br>
                 <input type="text" name="part" placeholder="INPUT ADMIN PART."> <br>
                 <input type="text" name="position" placeholder="INPUT ADMIN POSITION."> <br>
-                <input type="email" name="email" placeholder="INPUT ADMIN MAIL." ><br>
+                <input type="email" name="email" placeholder="INPUT ADMIN MAIL."><br>
                 <input type="text" name="phone" placeholder="INPUT ADMIN PHONE."> <br>
                 <input type="button" value="create account" onclick="createAccountForm();">
                 <input type="reset" value="reset">
@@ -70,7 +71,7 @@
 
 </section>
 
-<jsp:include page="../../include/footer.jsp" />
+<jsp:include page="../../include/footer.jsp"/>
 
 <script type="text/javascript">
 

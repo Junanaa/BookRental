@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8"%>
+         pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE html>
@@ -7,16 +7,16 @@
 <head>
     <meta charset="UTF-8">
 
-    <jsp:include page="../../include/title.jsp" />
+    <jsp:include page="../../include/title.jsp"/>
 
     <link href="<c:url value='/resources/css/admin/listup_admins.css' />" rel="stylesheet" type="text/css">
 
 </head>
 <body>
 
-<jsp:include page="../../include/header.jsp" />
+<jsp:include page="../../include/header.jsp"/>
 
-<jsp:include page="../include/nav.jsp" />
+<jsp:include page="../include/nav.jsp"/>
 
 <section>
 
@@ -61,7 +61,7 @@
                                     </c:url>
                                     <a href="${approval_url}">승인처리</a>
                                 </c:when>
-                                <c:when test="${item.approval eq 1}"> <c:out value="승인완료" /> </c:when>
+                                <c:when test="${item.approval eq 1}"> <c:out value="승인완료"/> </c:when>
                             </c:choose>
                         </td>
                     </tr>
@@ -75,7 +75,7 @@
 
 </section>
 
-<jsp:include page="../../include/footer.jsp" />
+<jsp:include page="../../include/footer.jsp"/>
 
 </body>
 </html>

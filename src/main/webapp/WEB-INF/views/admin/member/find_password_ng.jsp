@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: jun
-  Date: 5/17/24
-  Time: 2:07 PM
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -16,7 +9,8 @@
 
     <jsp:include page="../../include/title.jsp"/>
 
-    <link href="<c:url value='/resources/css/admin/create_account_result.css' />" rel="stylesheet" type="text/css">
+    <link href="<c:url value='/resources/css/admin/login_result.css' />" rel="stylesheet" type="text/css">
+
 
 </head>
 <body>
@@ -31,7 +25,7 @@
 
         <div class="word">
 
-            <h3>CREATE ACCOUNT SUCCESS!!</h3>
+            <h3>새로운 비밀번호 생성에 실패했습니다.</h3>
 
         </div>
 

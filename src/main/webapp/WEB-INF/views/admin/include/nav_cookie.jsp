@@ -1,11 +1,11 @@
-<%@page import="daelim.book.rental.admin.member.AdminMemberVo"%>
+<%@page import="daelim.book.rental.admin.member.AdminMemberVo" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8"%>
+         pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <link href="<c:url value='/resources/css/admin/include/nav.css' />" rel="stylesheet" type="text/css">
 
-<jsp:include page="./nav_js.jsp" />
+<jsp:include page="./nav_js.jsp"/>
 
 <nav>
 
@@ -22,7 +22,9 @@
             <c:otherwise>
                 <div class="menu">
                     <ul>
-                        <li><a href="<c:url value='/admin/member/logoutConfirm' />">로그아웃(${cookie.loginMember.value}) </a></li>
+                        <li>
+                            <a href="<c:url value='/admin/member/logoutConfirm' />">로그아웃(${cookie.loginMember.value}) </a>
+                        </li>
                         <li><a href="<c:url value='/admin/member/modifyAccountForm' />">계정수정</a></li>
 
                         <c:if test="${cookie.loginMember.value eq 'system'}">

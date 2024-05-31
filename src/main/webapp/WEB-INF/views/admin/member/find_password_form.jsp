@@ -16,7 +16,7 @@
 
     <jsp:include page="../../include/title.jsp"/>
 
-    <link href="<c:url value='/resources/css/admin/login_form.css' />" rel="stylesheet" type="text/css">
+    <link href="<c:url value='/resources/css/admin/find_password_form.css' />" rel="stylesheet" type="text/css">
 
 </head>
 <body>
@@ -31,26 +31,29 @@
 
         <div class="word">
 
-            <h3>LOGIN FORM</h3>
+            <h3>FIND PASSWORD FORM FORM</h3>
+            <p>(We Will Send you a new password.)</p>
 
         </div>
 
-        <div class="login_form">
+        <div class="find_password_form">
 
-            <form action="<c:url value='/admin/member/loginConfirm' />" name="login_form" method="post">
+            <form action="<c:url value='/admin/member/findPasswordConfirm' />" name="find_password_form" method="post">
 
                 <input type="text" name="id" placeholder="INPUT ADMIN ID."> <br>
-                <input type="password" name="password" placeholder="INPUT ADMIN PW."> <br>
-                <input type="button" value="login" onclick="loginForm();">
+                <input type="text" name="name" placeholder="INPUT ADMIN NAME."> <br>
+                <input type="text" name="email" placeholder="INPUT ADMIN EMAIL."> <br>
+
+                <input type="button" value="find password" onclick="findPassword();">
                 <input type="reset" value="reset">
 
             </form>
 
         </div>
 
-        <div class="find_password_create_account">
+        <div class="create_account_login">
 
-            <a href="<c:url value='/admin/member/findPasswordForm' />">find password</a>
+            <a href="<c:url value='/admin/member/loginForm' />">login</a>
             <a href="<c:url value='/admin/member/createAccountForm' />">create account</a>
 
         </div>
@@ -62,17 +65,19 @@
 <jsp:include page="../../include/footer.jsp"/>
 
 <script type="text/javascript">
-    function loginForm() {
-        console.log("loginForm()Called!!");
-        let form = document.login_form;
+    function findPassword() {
+        console.log("findPassword()Called!!");
+        let form = document.find_password_form;
 
         if (form.id.value == '') {
             alert('input admin id');
             form.id.focus();
-
-        } else if (form.password.value == '') {
-            alert('input admin password');
-            form.password.focus();
+        } else if (form.name.value == '') {
+            alert('input admin name');
+            form.name.focus();
+        } else if (form.email.value == '') {
+            alert('input admin email');
+            form.email.focus();
         } else {
             form.submit();
         }

@@ -35,7 +35,8 @@
             </ul>
         </div>
         <%
-            } else {}
+            } else {
+            }
         %>
         <div class="menu">
             <ul>

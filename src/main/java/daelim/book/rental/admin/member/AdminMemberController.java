@@ -40,7 +40,7 @@ public class AdminMemberController {
         return nextPage;
     }
 
-//    @PostMapping("/loginConfirm")
+    //    @PostMapping("/loginConfirm")
 //    public String loginConfirm(AdminMemberVo adminMemberVo, @CookieValue(value = "loginMember", required = false) String loginMember, HttpServletResponse response) {
 //        System.out.println("[AdminMemberController] loginConfirm()");
 //        String nextPage = "/admin/member/login_ok";
@@ -56,33 +56,34 @@ public class AdminMemberController {
 //        }
 //        return nextPage;
 //    }
-@PostMapping("/loginConfirm")
-public String loginConfirm(AdminMemberVo adminMemberVo, HttpSession session) {
-    System.out.println("[AdminMemberController.loginConfirm]");
-    String nextPage = "/admin/member/login_ok";
-    AdminMemberVo loginedAdminMemberVo = adminMemberService.loginConfirm(adminMemberVo);
+    @PostMapping("/loginConfirm")
+    public String loginConfirm(AdminMemberVo adminMemberVo, HttpSession session) {
+        System.out.println("[AdminMemberController.loginConfirm]");
+        String nextPage = "/admin/member/login_ok";
+        AdminMemberVo loginedAdminMemberVo = adminMemberService.loginConfirm(adminMemberVo);
 
-    if(loginedAdminMemberVo == null) {
-        nextPage = "/admin/member/login_ng";
-    } else {
-        // 세션 생성
-        session.setAttribute("loginedAdminMemberVo", loginedAdminMemberVo);
-        session.setMaxInactiveInterval(60 * 30);
+        if (loginedAdminMemberVo == null) {
+            nextPage = "/admin/member/login_ng";
+        } else {
+            // 세션 생성
+            session.setAttribute("loginedAdminMemberVo", loginedAdminMemberVo);
+            session.setMaxInactiveInterval(60 * 30);
 
+        }
+        return nextPage;
     }
-    return nextPage;
-}
 
 
     @GetMapping("/logoutConfirm")
-    public String logoutForm(@CookieValue(value="loginMember", required=false) String loginMember, HttpSession session) {
+    public String logoutForm(@CookieValue(value = "loginMember", required = false) String loginMember, HttpSession session) {
         System.out.println("[AdminMemberController.logoutForm]");
         String nextPage = "redirect:/admin/";
         session.invalidate();
 
         return nextPage;
     }
-//    @GetMapping("/logoutConfirm")
+
+    //    @GetMapping("/logoutConfirm")
 //    public String logoutForm(@CookieValue(value = "loginMember", required = false) String loginMember, HttpServletResponse response) {
 //        System.out.println("[AdminMemberController.logoutForm]");
 //        String nextPage = "redirect:/admin/";
@@ -99,11 +100,58 @@ public String loginConfirm(AdminMemberVo adminMemberVo, HttpSession session) {
         model.addAttribute("adminMemberVos", adminMemberVos);
         return nextPage;
     }
+
     @GetMapping("/setAdminApproval")
     public String seAdminApproval(@RequestParam("no") int no) {
         System.out.println("[AdminMemberController] setAdminApproval()");
-        String nextPage = "redirect:/admin/member/listupAmin";
+        String nextPage = "redirect:/admin/member/listupAdmin";
         adminMemberService.setAdminApproval(no);
+        return nextPage;
+    }
+
+    @GetMapping("/modifyAccountForm")
+    public String modifyAccountForm(HttpSession session) {
+        System.out.println("[AdminMemberController] modifyAccountForm()");
+        String nextPage = "/admin/member/modify_account_form";
+        AdminMemberVo adminMemberVo = (AdminMemberVo) session.getAttribute("loginedAdminMemberVo");
+        if (adminMemberVo == null) {
+            nextPage = "redirect:/admin/member/loginForm";
+        }
+        return nextPage;
+    }
+
+    @PostMapping("/modifyAccountConfirm")
+    public String modifyAccountConfirm(AdminMemberVo adminMemberVo, HttpSession session) {
+        System.out.println("[AdminMemberController] modifyAccountConform()");
+        String nextPage = "admin/member/modify_account_ok";
+        //modify account
+        int result = adminMemberService.modifyAccountConfirm(adminMemberVo);
+        if (result > 0) {
+            //AdminMemberVo 가져와서 session에 담기
+            AdminMemberVo loginedAdminMemberVo = adminMemberService.selectAdmin(adminMemberVo.getNo());
+            //session설정
+            session.setAttribute("loginedAdminMemberVo", loginedAdminMemberVo);
+            session.setMaxInactiveInterval(60 * 30);
+        } else {
+            nextPage = "admin/member/modify_account_ng";
+        }
+        return nextPage;
+    }
+    @GetMapping("/findPasswordForm")
+    public String findPasswordForm(){
+        System.out.println("[AdminMemberController] findpasswordForm()");
+        String nextPage = "admin/member/find_password_form";
+        return nextPage;
+    }
+    @PostMapping("/findPasswordConfirm")
+    public String findPasswordConfirm(AdminMemberVo adminMemberVo){
+        System.out.println("[AdminMemberController] findPasswordConfirm()");
+        String nextPage = "admin/member/find_password_ok";
+
+        int result = adminMemberService.findPasswordConfirm(adminMemberVo);
+        if(result <= 0){
+            nextPage = "admin/member/find_password_ng";
+        }
         return nextPage;
     }
 }

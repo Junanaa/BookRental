@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.sql.DataSource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -27,7 +28,7 @@ public class AdminMemberDao {
         System.out.println("[AdminMemberDao] insertAdminAccount()");
         List<String> args = new ArrayList<>();
         String sql = "INSERT INTO TB_ADMIN_ACCOUNT (";
-        if(adminMemberVo.getId().equals("system")) {
+        if (adminMemberVo.getId().equals("system")) {
             sql += "approval, ";
             args.add("1");
         }
@@ -58,7 +59,7 @@ public class AdminMemberDao {
 
         sql += "regDate, modDate) ";
 
-        if(adminMemberVo.getId().equals("system")) {
+        if (adminMemberVo.getId().equals("system")) {
             sql += "VALUES (?,?,?,?,?,?,?,?,?,NOW(), NOW())";
         } else {
             sql += "VALUES (?,?,?,?,?,?,?,?,NOW(), NOW())";
@@ -80,7 +81,7 @@ public class AdminMemberDao {
         String sql = "SELECT COUNT(*) FROM TB_ADMIN_ACCOUNT WHERE id = ?";
         int result = jdbcTemplate.queryForObject(sql, Integer.class, id);
 
-        if(result > 0) return true;
+        if (result > 0) return true;
         else return false;
     }
 
@@ -108,7 +109,7 @@ public class AdminMemberDao {
                 }
             }, adminMemberVo.getId());
 
-            if(!bCryptPasswordEncoder.matches(adminMemberVo.getPassword(), adminMemberVoList.get(0).getPassword())) {
+            if (!bCryptPasswordEncoder.matches(adminMemberVo.getPassword(), adminMemberVoList.get(0).getPassword())) {
                 adminMemberVoList.clear();
             }
 
@@ -117,6 +118,84 @@ public class AdminMemberDao {
         }
 
         return adminMemberVoList.size() > 0 ? adminMemberVoList.get(0) : null;
+    }
+
+    public AdminMemberVo selectAdmin(int no) {
+        System.out.println("[AdminMemberDao] selectAdmin()");
+
+        String sql = "SELECT * FROM TB_ADMIN_ACCOUNT WHERE no = ? ";
+
+        List<AdminMemberVo> adminMemberVos = new ArrayList<AdminMemberVo>();
+
+        try {
+
+            adminMemberVos = jdbcTemplate.query(sql, new RowMapper<AdminMemberVo>() {
+
+                @Override
+                public AdminMemberVo mapRow(ResultSet rs, int rowNum) throws SQLException {
+
+                    AdminMemberVo adminMemberVo = new AdminMemberVo();
+                    adminMemberVo.setNo(rs.getInt("no"));
+                    adminMemberVo.setId(rs.getString("id"));
+                    adminMemberVo.setName(rs.getString("name"));
+                    adminMemberVo.setPassword(rs.getString("password"));
+                    adminMemberVo.setGender(rs.getString("gender"));
+                    adminMemberVo.setPart(rs.getString("part"));
+                    adminMemberVo.setPosition(rs.getString("position"));
+                    adminMemberVo.setEmail(rs.getString("email"));
+                    adminMemberVo.setPhone(rs.getString("phone"));
+                    adminMemberVo.setRegDate(rs.getString("regDate"));
+                    adminMemberVo.setModDate(rs.getString("modDate"));
+                    adminMemberVo.setApproval(rs.getInt("approval"));
+
+                    return adminMemberVo;
+                }
+
+            }, no);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return adminMemberVos.size() > 0 ? adminMemberVos.get(0) : null;
+
+    }
+
+    public AdminMemberVo selectAdmin(String id, String name, String email) {
+        System.out.println("[AdminmemberDao] selectAdmin()");
+        String sql = "SELECT * FROM TB_ADMIN_ACCOUNT WHERE id = ? AND name = ? AND email = ? ";
+        List<AdminMemberVo> adminMemberVos = new ArrayList<>();
+        try {
+
+            adminMemberVos = jdbcTemplate.query(sql, new RowMapper<AdminMemberVo>() {
+
+                @Override
+                public AdminMemberVo mapRow(ResultSet rs, int rowNum) throws SQLException {
+
+                    AdminMemberVo adminMemberVo = new AdminMemberVo();
+                    adminMemberVo.setNo(rs.getInt("no"));
+                    adminMemberVo.setId(rs.getString("id"));
+                    adminMemberVo.setName(rs.getString("name"));
+                    adminMemberVo.setPassword(rs.getString("password"));
+                    adminMemberVo.setGender(rs.getString("gender"));
+                    adminMemberVo.setPart(rs.getString("part"));
+                    adminMemberVo.setPosition(rs.getString("position"));
+                    adminMemberVo.setEmail(rs.getString("email"));
+                    adminMemberVo.setPhone(rs.getString("phone"));
+                    adminMemberVo.setRegDate(rs.getString("regDate"));
+                    adminMemberVo.setModDate(rs.getString("modDate"));
+                    adminMemberVo.setApproval(rs.getInt("approval"));
+
+                    return adminMemberVo;
+
+                }
+
+            }, id, name, email);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return adminMemberVos.size() > 0 ? adminMemberVos.get(0) : null;
     }
 
     public List<AdminMemberVo> selectAllAdmin() {
@@ -145,23 +224,72 @@ public class AdminMemberDao {
                     return adminMemberVo;
                 }
             });
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
         return adminMemberVoList;
     }
 
-    public int updateAdminAccount(int no){
+    public int updateAdminAccount(int no) {
         System.out.println("[AdminMemberDao] updateAdminAccount()");
         String sql = "UPDATE TB_ADMIN_ACCOUNT SET approval = 1 WHERE no = ?";
         int result = -1;
         try {
 
             result = jdbcTemplate.update(sql, no);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return result;
     }
+
+    /**
+     * 관리자 계정정보수정
+     *
+     * @param adminMemberVo
+     * @return
+     */
+
+    public int updateAdminAccount(AdminMemberVo adminMemberVo) {
+        System.out.println("[AdminMemberDao]updateAdminAccount()");
+        String sql = "UPDATE TB_ADMIN_ACCOUNT SET "
+                + "name = ?, "
+                + "gender = ?, "
+                + "part = ?, "
+                + "position = ?, "
+                + "email = ?, "
+                + "phone = ?, "
+                + "modDate = NOW() "
+                + "WHERE no = ?";
+        int result = -1;
+        try {
+            result = jdbcTemplate.update(sql,
+                    adminMemberVo.getName(),
+                    adminMemberVo.getGender(),
+                    adminMemberVo.getPart(),
+                    adminMemberVo.getPosition(),
+                    adminMemberVo.getEmail(),
+                    adminMemberVo.getPhone(),
+                    adminMemberVo.getNo());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    public int updatePassword(String id, String newPassword) {
+        System.out.println("[AdminMemberDao] updatePassword()");
+
+        String sql = "UPDATE TB_ADMIN_ACCOUNT SET password = ?, modDate = NOW() WHERE id = ? ";
+        int result = -1;
+        try {
+            result = jdbcTemplate.update(sql, bCryptPasswordEncoder.encode(newPassword), id);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
 }
